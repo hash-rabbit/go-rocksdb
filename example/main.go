@@ -7,10 +7,10 @@ import (
 )
 
 func main() {
-	opt := rocksdb.NewOptions()
+	opt := rocksdb.CreateOptions()
 	opt.SetCreateIfMissing(true)
 	db := rocksdb.Open(opt, "../test")
 	db.Put(rocksdb.CreateWriteOption(), "123", "789")
-	value, _ := db.Get(rocksdb.CreateReadOption(), "123")
+	value, _ := db.Get(rocksdb.CreateReadOptions(), "123")
 	fmt.Print(value)
 }
