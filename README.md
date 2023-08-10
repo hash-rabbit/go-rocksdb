@@ -3,7 +3,7 @@ A go wrapper for rocksdb
 
 # reference
 [rocksdb](https://github.com/facebook/rocksdb)  
-[zlib](https://www.zlib.net/)([github](https://github.com/madler/zlib))
+[zlib](https://www.zlib.net/)([github](https://github.com/madler/zlib))  
 [bzip2](https://sourceware.org/bzip2/index.html)  
 [zstd](https://facebook.github.io/zstd/)([github](https://github.com/facebook/zstd))  
 [snappy](https://github.com/google/snappy)  
@@ -11,9 +11,11 @@ A go wrapper for rocksdb
 
 # Usage
 
-> only build in linux/macos
+## linux/macos
 
 you should install lib, Run
 ```shell
-# TODO
+curl "https://github.com/hash-rabbit/go-rocksdb/blob/master/install.sh" -o install.sh && chmod +x install.sh && ./install.sh
 ```
+
+if you don't have `cmake` you can install in [https://cmake.org/download/](https://cmake.org/download/)
