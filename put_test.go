@@ -1,6 +1,9 @@
 package rocksdb
 
-import "testing"
+import (
+	"strconv"
+	"testing"
+)
 
 func TestPut(t *testing.T) {
 	op := CreateOptions()
@@ -27,4 +30,22 @@ func TestPut(t *testing.T) {
 		}
 	}
 	t.Log("test ok")
+}
+
+func BenchmarkPut(b *testing.B) {
+	op := CreateOptions()
+	op.SetCreateIfMissing(true)
+
+	db := Open(op, "./test")
+	defer db.Close()
+
+	wo := CreateWriteOption()
+	defer wo.Destroy()
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		key := "key" + strconv.Itoa(i)
+		value := "value_" + key
+		db.Put(wo, key, value)
+	}
 }
