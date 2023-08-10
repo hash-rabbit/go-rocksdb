@@ -41,3 +41,32 @@ func (o *Options) OptimizeLevelStyleCompaction(memtable_memory_budget uint64) {
 func (o *Options) SetCreateIfMissing(create bool) {
 	C.rocksdb_options_set_create_if_missing(o.opt, boolToUchar(create))
 }
+
+type ComparessionType int
+
+const (
+	rocksdb_no_compression ComparessionType = iota
+	rocksdb_snappy_compression
+	rocksdb_zlib_compression
+	rocksdb_bz2_compression
+	rocksdb_lz4_compression
+	rocksdb_lz4hc_compression
+	rocksdb_xpress_compression
+	rocksdb_zstd_compression
+)
+
+func (o *Options) SetCompression(comtype ComparessionType) {
+	C.rocksdb_options_set_compression(o.opt, C.int(comtype))
+}
+
+func (o *Options) GetCompression() ComparessionType {
+	return ComparessionType(C.rocksdb_options_get_compression(o.opt))
+}
+
+func (o *Options) SetBottommostCompression(comtype ComparessionType) {
+	C.rocksdb_options_set_bottommost_compression(o.opt, C.int(comtype))
+}
+
+func (o *Options) GetBottommostCompression() ComparessionType {
+	return ComparessionType(C.rocksdb_options_get_bottommost_compression(o.opt))
+}

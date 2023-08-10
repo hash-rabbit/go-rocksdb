@@ -5,7 +5,9 @@ package rocksdb
 #include "rocksdb/c.h"
 */
 import "C"
-import "unsafe"
+import (
+	"unsafe"
+)
 
 func (db *DB) Get(ro *ReadOptions, key string) (string, error) {
 	var cErr *C.char
@@ -15,7 +17,7 @@ func (db *DB) Get(ro *ReadOptions, key string) (string, error) {
 	defer C.free(unsafe.Pointer(k))
 
 	value := C.rocksdb_get(db.db, ro.opt, k, CSize(key), &cValLen, &cErr)
-	return C.GoString(value), parseCerr(cErr)
+	return C.GoStringN(value, C.int(cValLen)), parseCerr(cErr)
 }
 
 func (db *DB) GetWithTs(ro *ReadOptions, key string) (string, string, error) {
@@ -29,7 +31,7 @@ func (db *DB) GetWithTs(ro *ReadOptions, key string) (string, string, error) {
 	var tslen C.size_t
 
 	value := C.rocksdb_get_with_ts(db.db, ro.opt, k, CSize(key), &valen, &ts, &tslen, &cErr)
-	return C.GoString(value), C.GoString(ts), parseCerr(cErr)
+	return C.GoStringN(value, C.int(valen)), C.GoStringN(ts, C.int(tslen)), parseCerr(cErr)
 }
 
 func (db *DB) GetCf(ro *ReadOptions, cf *ColumnFamily, key string) (string, error) {
@@ -40,7 +42,7 @@ func (db *DB) GetCf(ro *ReadOptions, cf *ColumnFamily, key string) (string, erro
 	defer C.free(unsafe.Pointer(k))
 
 	value := C.rocksdb_get_cf(db.db, ro.opt, cf.cf, k, CSize(key), &valen, &cErr)
-	return C.GoString(value), parseCerr(cErr)
+	return C.GoStringN(value, C.int(valen)), parseCerr(cErr)
 }
 
 func (db *DB) GetCfWithTs(ro *ReadOptions, cf *ColumnFamily, key string) (string, string, error) {
@@ -54,7 +56,7 @@ func (db *DB) GetCfWithTs(ro *ReadOptions, cf *ColumnFamily, key string) (string
 	defer C.free(unsafe.Pointer(k))
 
 	value := C.rocksdb_get_cf_with_ts(db.db, ro.opt, cf.cf, k, CSize(key), &valen, &ts, &tslen, &cErr)
-	return C.GoString(value), C.GoString(ts), parseCerr(cErr)
+	return C.GoStringN(value, C.int(valen)), C.GoStringN(ts, C.int(tslen)), parseCerr(cErr)
 }
 
 func (db *DB) MultiGet(ro *ReadOptions, keys []string) ([]string, error) {
