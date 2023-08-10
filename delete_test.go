@@ -2,7 +2,7 @@ package rocksdb
 
 import "testing"
 
-func TestGet(t *testing.T) {
+func TestDelete(t *testing.T) {
 	op := CreateOptions()
 	op.SetCreateIfMissing(true)
 
@@ -18,9 +18,24 @@ func TestGet(t *testing.T) {
 	}
 
 	for _, v := range ts {
+		db.Put(CreateWriteOption(), v[0], v[1])
+	}
+
+	for _, v := range ts {
 		if val, _ := db.Get(CreateReadOptions(), v[0]); val != v[1] {
 			t.Errorf("get key:%s value:%s real:%s", v[0], val, v[1])
 		}
 	}
-	t.Log("test ok")
+
+	db.Delete(CreateWriteOption(), "123")
+	db.Delete(CreateWriteOption(), "abc")
+
+	for _, v := range ts {
+		val, err := db.Get(CreateReadOptions(), v[0])
+		if err != nil {
+			t.Errorf("get error:%s", err)
+		} else {
+			t.Logf("key:%s value:%s", v[0], val)
+		}
+	}
 }
