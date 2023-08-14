@@ -5,6 +5,7 @@ package rocksdb
 */
 import "C"
 import (
+	"encoding/binary"
 	"errors"
 	"unsafe"
 )
@@ -67,4 +68,26 @@ func CcharToStrings(size C.size_t, strs **C.char) []string {
 
 func CSize(str string) C.size_t {
 	return C.size_t(len(str))
+}
+
+const timestampSize = 8
+
+func marshalTimestamp(ts uint64) []byte {
+	b := make([]byte, timestampSize)
+	binary.BigEndian.PutUint64(b, ts)
+	return b
+}
+
+// charToByte converts a *C.char to a byte slice.
+func charToByte(data *C.char, len C.size_t) []byte {
+	return unsafe.Slice((*byte)(unsafe.Pointer(data)), int(len))
+}
+
+// byteToChar returns *C.char from byte slice.
+func byteToChar(b []byte) *C.char {
+	var c *C.char
+	if len(b) > 0 {
+		c = (*C.char)(unsafe.Pointer(&b[0]))
+	}
+	return c
 }

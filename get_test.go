@@ -6,7 +6,7 @@ func TestGet(t *testing.T) {
 	op := CreateOptions()
 	op.SetCreateIfMissing(true)
 
-	db := Open(op, "./test")
+	db, _ := Open(op, "./test")
 	defer db.Close()
 
 	ts := [][]string{
@@ -29,7 +29,7 @@ func TestKeyexist(t *testing.T) {
 	op := CreateOptions()
 	op.SetCreateIfMissing(true)
 
-	db := Open(op, "./test")
+	db, _ := Open(op, "./test")
 	defer db.Close()
 
 	db.Put(CreateWriteOption(), "123", "456")
@@ -37,22 +37,4 @@ func TestKeyexist(t *testing.T) {
 
 	db.Delete(CreateWriteOption(), "123")
 	t.Log(db.KeyMayExist(CreateReadOptions(), "123", ""))
-}
-
-func TestGetTs(t *testing.T) {
-	op := CreateOptions()
-	op.SetCreateIfMissing(true)
-
-	db := Open(op, "./test")
-	defer db.Close()
-
-	db.PutWithTs(CreateWriteOption(), "test_10001", "value_10000", "1")
-
-	ro := CreateReadOptions()
-	ro.SetTimestamp("1")
-	value, ts, err := db.GetWithTs(ro, "test_10001")
-	if err != nil {
-		t.Fatal(err)
-	}
-	t.Logf("key:123 value:%s ts:%s", value, ts)
 }

@@ -15,16 +15,19 @@ type DB struct {
 	db *C.rocksdb_t
 }
 
-func Open(option *Options, path string) *DB {
+// Open open a rocksdb database
+// if err: Invalid argument: Column families not opened:xxx please use:OpenColumnFamilys
+func Open(option *Options, path string) (*DB, error) {
 	var cErr *C.char
+
 	name := C.CString(path)
 	defer C.free(unsafe.Pointer(name))
 
-	db := &DB{
-		db: C.rocksdb_open(option.opt, name, &cErr),
-	}
+	db := C.rocksdb_open(option.opt, name, &cErr)
 
-	return db
+	return &DB{
+		db: db,
+	}, parseCerr(cErr)
 }
 
 func OpenWithTTl(option *Options, path string, ttl int) *DB {

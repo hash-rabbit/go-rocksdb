@@ -6,7 +6,7 @@ func TestDelete(t *testing.T) {
 	op := CreateOptions()
 	op.SetCreateIfMissing(true)
 
-	db := Open(op, "./test")
+	db, _ := Open(op, "./test")
 	defer db.Close()
 
 	ts := [][]string{

@@ -9,7 +9,7 @@ func TestPut(t *testing.T) {
 	op := CreateOptions()
 	op.SetCreateIfMissing(true)
 
-	db := Open(op, "./test")
+	db, _ := Open(op, "./test")
 	defer db.Close()
 
 	ts := [][]string{
@@ -36,7 +36,7 @@ func BenchmarkPut(b *testing.B) {
 	op := CreateOptions()
 	op.SetCreateIfMissing(true)
 
-	db := Open(op, "./test")
+	db, _ := Open(op, "./test")
 	defer db.Close()
 
 	wo := CreateWriteOption()

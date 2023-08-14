@@ -6,6 +6,9 @@ func TestOpen(t *testing.T) {
 	op := CreateOptions()
 	op.SetCreateIfMissing(true)
 
-	db := Open(op, "./test")
+	db, err := Open(op, "./test")
+	if err != nil {
+		t.Fatal(err.Error())
+	}
 	defer db.Close()
 }
