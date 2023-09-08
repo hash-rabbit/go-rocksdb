@@ -1,7 +1,5 @@
 #! /bin/bash
 
-echo "start building library,this may takes a few time"
-
 PREFIX="/usr/local"
 INCLUDE_PATH="$PREFIX/include"
 LIB_PATH="$PREFIX/lib"
@@ -44,7 +42,6 @@ function startup(){
 }
 
 function cleanAndExit(){
-    echo "exit"
     rm -rf "$TEMPDIR"
     exit
 }
@@ -58,7 +55,7 @@ function instal_zlib(){
     cp -f "$ZLIB_DIR/zlib.h" "$ZLIB_DIR/zconf.h" "$INCLUDE_PATH" && \
     cp -f "$ZLIB_DIR/libz.a" "$LIB_PATH" || cleanAndExit
 
-    echo "🚀zlib installed"
+    echo "🚀 zlib installed"
 }
 
 function intall_bzip2(){
@@ -71,7 +68,7 @@ function intall_bzip2(){
     cp -f "$BZIP_DIR/bzlib.h" "$INCLUDE_PATH" && \
     cp -f "$BZIP_DIR/libbz2.a" "$LIB_PATH" || cleanAndExit
 
-    echo "🚀bzip2 installed"
+    echo "🚀 bzip2 installed"
 }
 
 function isntall_lz4(){
@@ -86,7 +83,7 @@ function isntall_lz4(){
     cp -f "$LZ4_DIR/lib/lz4hc.h" "$INCLUDE_PATH" && \
     cp -f "$LZ4_DIR/lib/lz4frame.h" "$INCLUDE_PATH" || cleanAndExit
 
-    echo "🚀lz4 installed"
+    echo "🚀 lz4 installed"
 }
 
 function install_snappy(){
@@ -104,7 +101,7 @@ function install_snappy(){
     cp -f "$SNAPPY_DIR/build/snappy-stubs-public.h" "$INCLUDE_PATH" && \
     cp -f "$SNAPPY_DIR/build/libsnappy.a" "$LIB_PATH" || cleanAndExit
 
-    echo "🚀snappy installed"
+    echo "🚀 snappy installed"
 }
 
 function isntall_zstd(){
@@ -118,7 +115,7 @@ function isntall_zstd(){
     cp -f "$ZSTD_DIR/lib/zdict.h" "$INCLUDE_PATH" && \
     cp -f "$ZSTD_DIR/lib/zstd_errors.h" "$INCLUDE_PATH" || cleanAndExit
 
-    echo "🚀zstd installed"
+    echo "🚀 zstd installed"
 }
 
 function install_rocksdb(){
@@ -131,11 +128,13 @@ function install_rocksdb(){
     cp -fr "$ROCKSDB_DIR/include/rocksdb" "$INCLUDE_PATH" && \
     cp -f "$ROCKSDB_DIR/librocksdb.a" "$LIB_PATH" || cleanAndExit
 
-    echo "🚀rocksdb installed, enjoy it!"
+    echo "🚀 rocksdb installed"
 }
 
 function main(){
     startup
+
+    echo "🚧 start building library,this may takes a few time"
 
     instal_zlib
 
@@ -148,6 +147,8 @@ function main(){
     isntall_zstd
 
     install_rocksdb
+
+    echo "🎉 build success! enjoy it!"
 
     cleanAndExit
 }
